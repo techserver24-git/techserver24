@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>About - TechServer24</title>
   <link href="https://unpkg.com/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body class="bg-gray-50 text-gray-900">
@@ -21,6 +22,16 @@
         <a href="index.html#services" class="hover:text-blue-600">Services</a>
         <a href="index.html#contacts" class="hover:text-blue-600">Contacts</a>
       </div>
+      <div class="md:hidden">
+        <button id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden bg-white px-6 pb-4">
+      <a href="index.html#home" class="block py-2">Home</a>
+      <a href="about.html" class="block py-2">About Us</a>
+      <a href="index.html#reviews" class="block py-2">Reviews</a>
+      <a href="index.html#services" class="block py-2">Services</a>
+      <a href="index.html#contacts" class="block py-2">Contacts</a>
     </div>
   </nav>
 <div class="about-div">
@@ -159,5 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setActiveStep(firstStep);
 });
 </script>
+  <script src="js/main.js"></script>
 </body>
 </html>
