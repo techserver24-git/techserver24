@@ -3,8 +3,26 @@
 // Global function for mobile menu toggle (can be called from onclick)
 function toggleMobileMenu() {
   const menu = document.getElementById('mobileMenu');
+  const btn = document.getElementById('mobileMenuBtn');
+  
+  console.log('=== toggleMobileMenu called ===');
+  console.log('Menu element:', menu);
+  console.log('Button element:', btn);
+  
   if (menu) {
-    menu.classList.toggle('hidden');
+    const isHidden = menu.classList.contains('mobile-menu-hidden');
+    if (isHidden) {
+      console.log('Menu is currently hidden. Showing menu.');
+      menu.classList.remove('mobile-menu-hidden');
+    } else {
+      console.log('Menu is currently visible. Hiding menu.');
+      menu.classList.add('mobile-menu-hidden');
+    }
+    
+    console.log('Menu toggled. Hidden class present:', menu.classList.contains('mobile-menu-hidden'));
+    console.log('Current display:', window.getComputedStyle(menu).display);
+  } else {
+    console.error('Menu element not found!');
   }
 }
 
@@ -13,66 +31,97 @@ function closeMenuOnClickOutside(e) {
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   
-  if (mobileBtn && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+  if (mobileBtn && mobileMenu && !mobileMenu.classList.contains('mobile-menu-hidden')) {
     if (!e.target.closest('#mobileMenuBtn') && !e.target.closest('#mobileMenu')) {
-      mobileMenu.classList.add('hidden');
+      mobileMenu.classList.add('mobile-menu-hidden');
     }
   }
 }
 
 // Add event listeners on page load
 document.addEventListener('DOMContentLoaded', () => {
+  console.log('=== DOMContentLoaded fired ===');
+  
+  // Check if we're on index.html (main page)
+  const isIndexPage = window.location.pathname.includes('index.html') || window.location.pathname === '/' || !window.location.pathname.includes('.html');
+  console.log('Is index page:', isIndexPage);
+  
   // Mobile menu toggle and close on link click
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   
+  console.log('Mobile btn found:', !!mobileBtn);
+  console.log('Mobile menu found:', !!mobileMenu);
+  console.log('Button HTML:', mobileBtn?.outerHTML);
+  
+  if (mobileBtn) {
+    console.log('Button computed style - cursor:', window.getComputedStyle(mobileBtn).cursor);
+    console.log('Button computed style - z-index:', window.getComputedStyle(mobileBtn).zIndex);
+    console.log('Button computed style - display:', window.getComputedStyle(mobileBtn).display);
+    console.log('Button computed style - pointer-events:', window.getComputedStyle(mobileBtn).pointerEvents);
+  }
+  
   if (mobileBtn && mobileMenu) {
     // Event listener for button
     mobileBtn.addEventListener('click', (e) => {
+      console.log('Button click event fired!');
       e.preventDefault();
       e.stopPropagation();
       toggleMobileMenu();
     });
     
+    console.log('Click listener attached to button');
+    
     // Close menu when any link is clicked
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        mobileMenu.classList.add('hidden');
+        console.log('Menu link clicked, closing menu');
+        mobileMenu.classList.add('mobile-menu-hidden');
       });
     });
+  } else {
+    console.error('Mobile menu elements not found!');
   }
   
   // Close menu when clicking outside
   document.addEventListener('click', closeMenuOnClickOutside);
 
-  // Simple carousel autoplay
-  const track = document.querySelector('.carousel-track');
-  let idx = 0;
-  const slides = document.querySelectorAll('.carousel-item');
-  setInterval(() => {
-    idx = (idx + 1) % slides.length;
-    track.style.transform = `translateX(-${idx * 100}%)`;
-  }, 5000);
+  // ===== INDEX PAGE ONLY: Carousel and Reviews transforms =====
+  if (isIndexPage) {
+    // Simple carousel autoplay
+    const track = document.querySelector('.carousel-track');
+    let idx = 0;
+    const slides = document.querySelectorAll('.carousel-item');
+    if (track && slides.length > 0) {
+      setInterval(() => {
+        idx = (idx + 1) % slides.length;
+        track.style.transform = `translateX(-${idx * 100}%)`;
+      }, 5000);
+    }
 
-  // Reviews carousel auto-rotation
-  const reviewsTrack = document.getElementById('reviewsTrack');
-  const reviewCards = Array.from(document.querySelectorAll('.review-card'));
-  let rIdx = 0;
+    // Reviews carousel auto-rotation
+    const reviewsTrack = document.getElementById('reviewsTrack');
+    const reviewCards = Array.from(document.querySelectorAll('.review-card'));
+    let rIdx = 0;
 
-  const showReview = (i) => {
-    rIdx = (i + reviewCards.length) % reviewCards.length;
-    reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
-    reviewCards.forEach((c, idx) => {
-      c.classList.remove('active', 'inactive');
-      if (idx === rIdx) c.classList.add('active');
-      else c.classList.add('inactive');
-    });
-  };
+    const showReview = (i) => {
+      rIdx = (i + reviewCards.length) % reviewCards.length;
+      if (reviewsTrack) {
+        reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
+      }
+      reviewCards.forEach((c, idx) => {
+        c.classList.remove('active', 'inactive');
+        if (idx === rIdx) c.classList.add('active');
+        else c.classList.add('inactive');
+      });
+    };
 
-  if (reviewCards.length > 0) {
-    showReview(0);
-    setInterval(() => showReview(rIdx + 1), 5000);
+    if (reviewCards.length > 0) {
+      showReview(0);
+      setInterval(() => showReview(rIdx + 1), 5000);
+    }
   }
+  // ===== END INDEX PAGE ONLY =====
 
   // About sections scroll journey effect
   const aboutSections = Array.from(document.querySelectorAll('.about-section'));

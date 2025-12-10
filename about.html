@@ -26,7 +26,7 @@
         <button id="mobileMenuBtn" onclick="toggleMobileMenu()">☰</button>
       </div>
     </div>
-    <div id="mobileMenu" class="hidden bg-white px-6 pb-4">
+    <div id="mobileMenu" class="mobile-menu-hidden bg-white px-6 pb-4">
       <a href="index.html#home" class="block py-2">Home</a>
       <a href="about.html" class="block py-2">About Us</a>
       <a href="index.html#reviews" class="block py-2">Reviews</a>
@@ -36,139 +36,79 @@
   </nav>
 <div class="about-div">
     <div class="step active">
+      
         <h2 data-step-id="1">Since 1976 - How J.R. Corporation Started</h2>
         <div class="step-card">
+          <br><br><br>
           <p>Founded by Mr. Bajaj and Mr. Grover, J R Corporation is a sister company built on a legacy of business excellence since 1976. </p>
-          <button class="next">Then</button>
+          <br><br><br>
         </div>
     </div>
     <div class="step">
         <h2 data-step-id="2">2015 - Entering the Realm of Softwares and Gaming</h2>
         <div class="step-card">
+          <br><br><br>
           <p>With over 15 years of specialized experience in the service sector, we have expanded our vision into the dynamic world of software and gaming.</p>
-          <button class="back">Previous</button>
-          <button class="next">Then</button>
+          <br><br><br>
         </div>
     </div>
     <div class="step">
         <h2 data-step-id="3">2018 - Creating and Selling our First Software</h2>
         <div class="step-card">
+          <br><br><br>
           <p>Our First Software Sold enhanced our Confidence and Strengthened our Belief System to Serve. At J R Corporation, we believe technology should inspire, empower, and entertain <Br> and Hence , SERVE !!!</p>
-          <button class="back">Previous</button>
-          <button class="next">Then</button>
+          <br><br><br>
         </div>
     </div>
     <div class="step">
         <h2 data-step-id="4">2021 - Started Providing Subscription Based Services of Softwares</h2>
         <div class="step-card">
+          <br><br><br>
           <p>Entering the Domain of Subscription Services was a Broad Step. Our software solutions are designed to simplify complex challenges, while our gaming products bring creativity and excitement to life. By blending decades of entrepreneurial expertise with modern innovation, we deliver products that are reliable, engaging, and future-ready.</p>
-          <button class="back">Previous</button>
-          <button class="next">At Last</button>
+          <br><br><br>
         </div>
     </div>
     <div class="step">
-        <h2 data-step-id="✓">Here We are !!!</h2>
+        <h2 data-step-id="✓">Finally ! Here We are !!!</h2>
         <div class="step-card">
+          <br><br><br>
           <p>Driven by a commitment to quality and customer satisfaction, we continue to evolve with the digital age—building not just software and games, but experiences that connect people and create lasting value.</p>
+          <br><br><br>
         </div>
+        
     </div>
+    
 
 </div>
 <script>
-    
-    /**
- * Pure JavaScript equivalent for the multi-step progression logic.
- */
-
-// Function to set the active step, update classes, and scroll with synchronized animation
-function setActiveStep(p_oElement) {
-    if (!p_oElement) return; // Guard clause if element is null/undefined
-
-    // 1. Remove 'active' and 'inactive' classes from all steps
-    document.querySelectorAll(".step.active").forEach(el => el.classList.remove("active"));
-    document.querySelectorAll(".step.inactive").forEach(el => el.classList.remove("inactive"));
-
-    // 2. Set the current element as 'active'
-    p_oElement.classList.add("active");
-
-    // 3. Set all subsequent steps as 'inactive'
-    let nextSibling = p_oElement.nextElementSibling;
-    while (nextSibling) {
-        if (nextSibling.classList.contains("step")) {
-            nextSibling.classList.add("inactive");
-        }
-        nextSibling = nextSibling.nextElementSibling;
-    }
-
-    // 4. Scroll with custom animation synchronized to fade effect (800ms)
-    const targetTop = p_oElement.offsetTop;
-    const startTop = window.scrollY;
-    const distance = targetTop - startTop;
-    const duration = 800; // Match the CSS animation duration (0.8s = 800ms)
-    const startTime = performance.now();
-
-    function animateScroll(currentTime) {
-        const elapsed = currentTime - startTime;
-        const progress = Math.min(elapsed / duration, 1);
-        // Use cubic-bezier equivalent for smooth easing: cubic-bezier(0.25, 0.46, 0.45, 0.94)
-        const easeProgress = easeInOutCubic(progress);
-        window.scrollTo(0, startTop + distance * easeProgress);
+    // Auto-activate steps based on scroll position
+    document.addEventListener('DOMContentLoaded', () => {
+        const steps = Array.from(document.querySelectorAll('.step'));
         
-        if (progress < 1) {
-            requestAnimationFrame(animateScroll);
+        // Activate first step initially
+        if (steps.length > 0) {
+            steps[0].classList.add('active');
         }
-    }
-
-    requestAnimationFrame(animateScroll);
-}
-
-// Cubic-bezier easing function approximation
-function easeInOutCubic(t) {
-    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
-}
-
-// ----------------------------------------------------
-// Event Handlers for 'Next' and 'Back' buttons
-// ----------------------------------------------------
-
-document.addEventListener('DOMContentLoaded', () => {
-
-    // 'Next' buttons:
-    // Equivalent to: $(".next").click(function(){ ... });
-    document.querySelectorAll(".next").forEach(button => {
-        button.addEventListener('click', function() {
-            // Equivalent to: var oParent = $(this).closest(".step");
-            const oParent = this.closest(".step");
-
-            // Equivalent to: setActiveStep(oParent.next());
-            const nextStep = oParent ? oParent.nextElementSibling : null;
-            if (nextStep && nextStep.classList.contains("step")) {
-                setActiveStep(nextStep);
-            }
+        
+        // Listen to scroll and update active step
+        window.addEventListener('scroll', () => {
+            steps.forEach((step, index) => {
+                const rect = step.getBoundingClientRect();
+                const isInView = rect.top < window.innerHeight * 0.5 && rect.bottom > window.innerHeight * 0.5;
+                
+                if (isInView) {
+                    // Remove active/inactive from all steps
+                    steps.forEach(s => s.classList.remove('active', 'inactive'));
+                    // Mark current as active
+                    step.classList.add('active');
+                    // Mark subsequent as inactive
+                    steps.forEach((s, i) => {
+                        if (i > index) s.classList.add('inactive');
+                    });
+                }
+            });
         });
     });
-
-    // 'Back' buttons:
-    // Equivalent to: $(".back").click(function(){ ... });
-    document.querySelectorAll(".back").forEach(button => {
-        button.addEventListener('click', function() {
-            // Equivalent to: var oParent = $(this).closest(".step");
-            const oParent = this.closest(".step");
-
-            // Equivalent to: setActiveStep(oParent.prev());
-            const prevStep = oParent ? oParent.previousElementSibling : null;
-            if (prevStep && prevStep.classList.contains("step")) {
-                setActiveStep(prevStep);
-            }
-        });
-    });
-
-
-    // Init the first step:
-    // Equivalent to: setActiveStep($(".step")[0]);
-    const firstStep = document.querySelector(".step");
-    setActiveStep(firstStep);
-});
 </script>
   <script src="js/main.js"></script>
 </body>

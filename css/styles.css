@@ -65,11 +65,36 @@ html,body{scroll-behavior:smooth;scroll-padding-top:60px}
   cursor: pointer;
   color: #333;
   padding: 0.5rem;
+  z-index: 50 !important;
+  position: relative;
+  pointer-events: auto !important;
+  display: block !important;
+  visibility: visible !important;
 }
 
 #mobileMenuBtn:hover {
   opacity: 0.7;
-  
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+}
+
+#mobileMenuBtn:active {
+  transform: scale(0.95);
+}
+
+/* Mobile menu visibility control */
+#mobileMenu {
+  display: block;
+  max-height: 500px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  z-index: 40;
+}
+
+#mobileMenu.mobile-menu-hidden {
+  display: none;
+  max-height: 0;
+  visibility: hidden;
 }
 
 .about-div {
