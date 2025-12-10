@@ -57,60 +57,19 @@ html,body{scroll-behavior:smooth;scroll-padding-top:60px}
   .carousel-item{background-attachment:scroll}
 }
 
-/* Mobile Menu Navigation */
-.mobile-menu-toggle {
+/* Mobile menu button styling */
+#mobileMenuBtn {
   background: none;
   border: none;
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   cursor: pointer;
-  color: #1f2937;
+  color: #333;
   padding: 0.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
 }
 
-.mobile-menu-toggle:hover {
-  color: #2563eb;
-  transform: scale(1.1);
-}
-
-.mobile-menu-toggle.active {
-  color: #2563eb;
-}
-
-.mobile-nav-menu {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  right: 0;
-  background: white;
-  border-top: 1px solid #e5e7eb;
-  z-index: 40;
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease;
-}
-
-.mobile-nav-menu.open {
-  max-height: 300px;
-}
-
-.mobile-nav-menu a {
-  display: block;
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #f3f4f6;
-  color: #1f2937;
-  text-decoration: none;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.mobile-nav-menu a:hover {
-  background: #f9fafb;
-  color: #2563eb;
-  padding-left: 2rem;
+#mobileMenuBtn:hover {
+  opacity: 0.7;
+  
 }
 
 .about-div {

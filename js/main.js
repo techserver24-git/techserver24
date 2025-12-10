@@ -1,28 +1,49 @@
 /* Main JS for TechServer24 site */
+
+// Global function for mobile menu toggle (can be called from onclick)
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobileMenu');
+  if (menu) {
+    menu.classList.toggle('hidden');
+  }
+}
+
+// Close menu when clicking outside
+function closeMenuOnClickOutside(e) {
+  const mobileBtn = document.getElementById('mobileMenuBtn');
+  const mobileMenu = document.getElementById('mobileMenu');
+  
+  if (mobileBtn && mobileMenu && !mobileMenu.classList.contains('hidden')) {
+    if (!e.target.closest('#mobileMenuBtn') && !e.target.closest('#mobileMenu')) {
+      mobileMenu.classList.add('hidden');
+    }
+  }
+}
+
+// Add event listeners on page load
 document.addEventListener('DOMContentLoaded', () => {
   // Mobile menu toggle and close on link click
   const mobileBtn = document.getElementById('mobileMenuBtn');
   const mobileMenu = document.getElementById('mobileMenu');
   
-  console.log('Mobile btn:', mobileBtn);
-  console.log('Mobile menu:', mobileMenu);
-  
   if (mobileBtn && mobileMenu) {
+    // Event listener for button
     mobileBtn.addEventListener('click', (e) => {
       e.preventDefault();
-      console.log('Hamburger clicked');
-      mobileMenu.classList.toggle('hidden');
+      e.stopPropagation();
+      toggleMobileMenu();
     });
+    
     // Close menu when any link is clicked
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        console.log('Menu link clicked');
         mobileMenu.classList.add('hidden');
       });
     });
-  } else {
-    console.error('Mobile menu elements not found');
   }
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', closeMenuOnClickOutside);
 
   // Simple carousel autoplay
   const track = document.querySelector('.carousel-track');
