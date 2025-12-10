@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About - TechServer24</title>
+  <link href="https://unpkg.com/tailwindcss@^2.2/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="bg-gray-50 text-gray-900">
+  <nav class="bg-white shadow fixed w-full z-30">
+    <div class="container mx-auto px-6 py-3 flex items-center justify-between">
+      <a href="index.html#home" class="flex items-center">
+        <img src="https://via.placeholder.com/48x48.png?text=TS" alt="TechServer24" class="w-12 h-12 mr-3 rounded-md">
+        <span class="font-bold text-xl">TechServer24</span>
+      </a>
+      <div class="hidden md:flex space-x-6">
+        <a href="index.html#home" class="hover:text-blue-600">Home</a>
+        <a href="about.html" class="hover:text-blue-600">About Us</a>
+        <a href="index.html#reviews" class="hover:text-blue-600">Reviews</a>
+        <a href="index.html#services" class="hover:text-blue-600">Services</a>
+        <a href="index.html#contacts" class="hover:text-blue-600">Contacts</a>
+      </div>
+    </div>
+  </nav>
+<div class="about-div">
+    <div class="step active">
+        <h2 data-step-id="1">Since 1976 - How J.R. Corporation Started</h2>
+        <div class="step-card">
+          <p>Founded by Mr. Bajaj and Mr. Grover, J R Corporation is a sister company built on a legacy of business excellence since 1976. </p>
+          <button class="next">Then</button>
+        </div>
+    </div>
+    <div class="step">
+        <h2 data-step-id="2">2015 - Entering the Realm of Softwares and Gaming</h2>
+        <div class="step-card">
+          <p>With over 15 years of specialized experience in the service sector, we have expanded our vision into the dynamic world of software and gaming.</p>
+          <button class="back">Previous</button>
+          <button class="next">Then</button>
+        </div>
+    </div>
+    <div class="step">
+        <h2 data-step-id="3">2018 - Creating and Selling our First Software</h2>
+        <div class="step-card">
+          <p>Our First Software Sold enhanced our Confidence and Strengthened our Belief System to Serve. At J R Corporation, we believe technology should inspire, empower, and entertain <Br> and Hence , SERVE !!!</p>
+          <button class="back">Previous</button>
+          <button class="next">Then</button>
+        </div>
+    </div>
+    <div class="step">
+        <h2 data-step-id="4">2021 - Started Providing Subscription Based Services of Softwares</h2>
+        <div class="step-card">
+          <p>Entering the Domain of Subscription Services was a Broad Step. Our software solutions are designed to simplify complex challenges, while our gaming products bring creativity and excitement to life. By blending decades of entrepreneurial expertise with modern innovation, we deliver products that are reliable, engaging, and future-ready.</p>
+          <button class="back">Previous</button>
+          <button class="next">At Last</button>
+        </div>
+    </div>
+    <div class="step">
+        <h2 data-step-id="✓">Here We are !!!</h2>
+        <div class="step-card">
+          <p>Driven by a commitment to quality and customer satisfaction, we continue to evolve with the digital age—building not just software and games, but experiences that connect people and create lasting value.</p>
+        </div>
+    </div>
+
+</div>
+<script>
+    
+    /**
+ * Pure JavaScript equivalent for the multi-step progression logic.
+ */
+
+// Function to set the active step, update classes, and scroll with synchronized animation
+function setActiveStep(p_oElement) {
+    if (!p_oElement) return; // Guard clause if element is null/undefined
+
+    // 1. Remove 'active' and 'inactive' classes from all steps
+    document.querySelectorAll(".step.active").forEach(el => el.classList.remove("active"));
+    document.querySelectorAll(".step.inactive").forEach(el => el.classList.remove("inactive"));
+
+    // 2. Set the current element as 'active'
+    p_oElement.classList.add("active");
+
+    // 3. Set all subsequent steps as 'inactive'
+    let nextSibling = p_oElement.nextElementSibling;
+    while (nextSibling) {
+        if (nextSibling.classList.contains("step")) {
+            nextSibling.classList.add("inactive");
+        }
+        nextSibling = nextSibling.nextElementSibling;
+    }
+
+    // 4. Scroll with custom animation synchronized to fade effect (800ms)
+    const targetTop = p_oElement.offsetTop;
+    const startTop = window.scrollY;
+    const distance = targetTop - startTop;
+    const duration = 800; // Match the CSS animation duration (0.8s = 800ms)
+    const startTime = performance.now();
+
+    function animateScroll(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // Use cubic-bezier equivalent for smooth easing: cubic-bezier(0.25, 0.46, 0.45, 0.94)
+        const easeProgress = easeInOutCubic(progress);
+        window.scrollTo(0, startTop + distance * easeProgress);
+        
+        if (progress < 1) {
+            requestAnimationFrame(animateScroll);
+        }
+    }
+
+    requestAnimationFrame(animateScroll);
+}
+
+// Cubic-bezier easing function approximation
+function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+// ----------------------------------------------------
+// Event Handlers for 'Next' and 'Back' buttons
+// ----------------------------------------------------
+
+document.addEventListener('DOMContentLoaded', () => {
+
+    // 'Next' buttons:
+    // Equivalent to: $(".next").click(function(){ ... });
+    document.querySelectorAll(".next").forEach(button => {
+        button.addEventListener('click', function() {
+            // Equivalent to: var oParent = $(this).closest(".step");
+            const oParent = this.closest(".step");
+
+            // Equivalent to: setActiveStep(oParent.next());
+            const nextStep = oParent ? oParent.nextElementSibling : null;
+            if (nextStep && nextStep.classList.contains("step")) {
+                setActiveStep(nextStep);
+            }
+        });
+    });
+
+    // 'Back' buttons:
+    // Equivalent to: $(".back").click(function(){ ... });
+    document.querySelectorAll(".back").forEach(button => {
+        button.addEventListener('click', function() {
+            // Equivalent to: var oParent = $(this).closest(".step");
+            const oParent = this.closest(".step");
+
+            // Equivalent to: setActiveStep(oParent.prev());
+            const prevStep = oParent ? oParent.previousElementSibling : null;
+            if (prevStep && prevStep.classList.contains("step")) {
+                setActiveStep(prevStep);
+            }
+        });
+    });
+
+
+    // Init the first step:
+    // Equivalent to: setActiveStep($(".step")[0]);
+    const firstStep = document.querySelector(".step");
+    setActiveStep(firstStep);
+});
+</script>
+</body>
+</html>
