@@ -86,42 +86,52 @@ document.addEventListener('DOMContentLoaded', () => {
   // Close menu when clicking outside
   document.addEventListener('click', closeMenuOnClickOutside);
 
-  // ===== INDEX PAGE ONLY: Carousel and Reviews transforms =====
-  if (isIndexPage) {
-    // Simple carousel autoplay
-    const track = document.querySelector('.carousel-track');
-    let idx = 0;
-    const slides = document.querySelectorAll('.carousel-item');
-    if (track && slides.length > 0) {
-      setInterval(() => {
-        idx = (idx + 1) % slides.length;
-        track.style.transform = `translateX(-${idx * 100}%)`;
-      }, 5000);
-    }
+  // Simple carousel autoplay
+  const track = document.querySelector('.carousel-track');
+  let idx = 0;
+  const slides = document.querySelectorAll('.carousel-item');
+  // blurred background element (fills empty space with blurred version of current slide)
+  const carouselBg = document.querySelector('.carousel-bg-blur');
 
-    // Reviews carousel auto-rotation
-    const reviewsTrack = document.getElementById('reviewsTrack');
-    const reviewCards = Array.from(document.querySelectorAll('.review-card'));
-    let rIdx = 0;
+  const updateCarouselBg = (index) => {
+    if (!carouselBg) return;
+    const slide = slides[index];
+    if (!slide) return;
+    const img = slide.querySelector('img');
+    if (!img) return;
+    carouselBg.style.backgroundImage = `url(${img.src})`;
+    carouselBg.style.backgroundSize = 'cover';
+    carouselBg.style.backgroundPosition = 'center';
+  };
 
-    const showReview = (i) => {
-      rIdx = (i + reviewCards.length) % reviewCards.length;
-      if (reviewsTrack) {
-        reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
-      }
-      reviewCards.forEach((c, idx) => {
-        c.classList.remove('active', 'inactive');
-        if (idx === rIdx) c.classList.add('active');
-        else c.classList.add('inactive');
-      });
-    };
+  // initialize
+  if (slides.length > 0) updateCarouselBg(0);
 
-    if (reviewCards.length > 0) {
-      showReview(0);
-      setInterval(() => showReview(rIdx + 1), 5000);
-    }
+  setInterval(() => {
+    idx = (idx + 1) % slides.length;
+    track.style.transform = `translateX(-${idx * 100}%)`;
+    updateCarouselBg(idx);
+  }, 5000);
+
+  // Reviews carousel auto-rotation
+  const reviewsTrack = document.getElementById('reviewsTrack');
+  const reviewCards = Array.from(document.querySelectorAll('.review-card'));
+  let rIdx = 0;
+
+  const showReview = (i) => {
+    rIdx = (i + reviewCards.length) % reviewCards.length;
+    reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
+    reviewCards.forEach((c, idx) => {
+      c.classList.remove('active', 'inactive');
+      if (idx === rIdx) c.classList.add('active');
+      else c.classList.add('inactive');
+    });
+  };
+
+  if (reviewCards.length > 0) {
+    showReview(0);
+    setInterval(() => showReview(rIdx + 1), 5000);
   }
-  // ===== END INDEX PAGE ONLY =====
 
   // About sections scroll journey effect
   const aboutSections = Array.from(document.querySelectorAll('.about-section'));

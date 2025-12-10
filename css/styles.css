@@ -1,6 +1,16 @@
 /* Basic custom styles for TechServer24 site */
 :root{
   --accent: #2563eb;
+  /* Glassmorphism & gradients */
+  --glass-bg: rgba(255,255,255,0.55);
+  --glass-bg-strong: rgba(255,255,255,0.75);
+  --glass-border: rgba(255,255,255,0.5);
+  --glass-blur: 10px;
+  --primary-1: #34d399; /* greenish */
+  --primary-2: #3b82f6; /* blue */
+  --primary-gradient: linear-gradient(135deg, var(--primary-1) 0%, var(--primary-2) 100%);
+  --page-gradient: linear-gradient(180deg, #fbfdff 0%, #eef6ff 100%);
+  --muted: #6b7280;
 }
 /* Carousel */
 .carousel{position:relative;overflow:hidden}
@@ -11,6 +21,32 @@
 .carousel-overlay{position:absolute;inset:0;background:linear-gradient(rgba(0,0,0,0.35),rgba(0,0,0,0.35))}
 .carousel{z-index:0}
 .carousel-overlay{z-index:1}
+
+/* Blurred background for mobile - fills empty space */
+.carousel-bg-blur {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  filter: blur(25px);
+  z-index: -1;
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .carousel-bg-blur {
+    display: block;
+  }
+}
+
+@media (min-width: 769px) {
+  .carousel-bg-blur {
+    display: block;
+  }
+}
+
+/* Force carousel blur to remain visible to fill empty space (user's original fix) */
+.carousel-bg-blur { display: block !important; }
 
 /* Hero content should sit above the carousel and overlay */
 .hero-content{position:relative;z-index:50}
@@ -36,6 +72,71 @@
 .about-journey{scroll-snap-type:y mandatory}
 .about-section{scroll-snap-align:start}
 html,body{scroll-behavior:smooth;scroll-padding-top:60px}
+
+/* Global page background using a soft gradient */
+body{
+  background: var(--page-gradient);
+  color: #0f172a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Section wrapper utilities */
+.section{
+  padding: 3.5rem 1.25rem;
+}
+.section-inner{
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Glass card base used throughout the site */
+.glass {
+  background: var(--glass-bg);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.06);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+
+/* Slightly stronger glass (for hero, key cards) */
+.glass-strong{
+  /* stronger, high-contrast glass for navbar and key elements */
+  background: linear-gradient(180deg, rgba(255,255,255,0.86) 0%, rgba(255,255,255,0.68) 100%);
+  border-radius: 12px;
+  box-shadow: 0 18px 50px rgba(2,6,23,0.12);
+  border: 1px solid rgba(255,255,255,0.75);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  padding: 0.6rem 1rem;
+}
+
+/* When .glass-strong is used in the nav, keep it compact and centered */
+nav .glass-strong{ display:flex; align-items:center; justify-content:space-between; width:100%; max-width:1200px; margin:0 auto; }
+
+/* Primary buttons with gradient */
+.btn-primary{
+  display: inline-block;
+  background: var(--primary-gradient);
+  color: white;
+  border: none;
+  padding: 0.65rem 1.1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(59,130,246,0.16);
+  transition: transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+}
+.btn-primary:hover{transform: translateY(-3px); box-shadow: 0 14px 40px rgba(59,130,246,0.18)}
+
+/* Card tweaks to use glass effect where appropriate */
+.step-card{background: rgba(255,255,255,0.7); border: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(8px)}
+.review-card{background: rgba(255,255,255,0.85); border: 1px solid rgba(0,0,0,0.04); backdrop-filter: blur(6px)}
+
+/* Hero tweaks */
+.hero-content{padding:2.5rem}
+.hero-cta{margin-top:1rem}
+
 
 /* Journey text style */
 .journey-text{font-size:1.05rem;color:#111827;line-height:1.6}
@@ -96,6 +197,28 @@ html,body{scroll-behavior:smooth;scroll-padding-top:60px}
   max-height: 0;
   visibility: hidden;
 }
+
+/* Keep nav wrapper transparent; inner .glass-strong shows the glass effect */
+nav {
+  background: transparent;
+  border-bottom: none;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Ensure nav inner container remains transparent so glass shows through */
+nav .container{ background: transparent; }
+
+/* Mobile menu should also use glass style */
+#mobileMenu { background: rgba(255,255,255,0.65); border-top: 1px solid rgba(255,255,255,0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+
+/* Navbar links: slightly muted but clear */
+nav a{ color: #0f172a; }
+nav a:hover{ color: #1e40af; }
+
+/* Mobile menu button ensure visible on glass */
+#mobileMenuBtn{ color: #0b1220 }
 
 .about-div {
     padding-top : 100px ; 
@@ -314,4 +437,31 @@ button::-moz-focus-inner {border: 0;}
 
 @media all and (max-width: 400px){
   .step h2 {font-size:1.1em}
+}
+
+/* Services and Reviews light-shade backgrounds */
+#services {
+  position: relative;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8f1ff 50%, #f5f9ff 100%);
+}
+
+#services::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+#reviews {
+  position: relative;
+  background: linear-gradient(135deg, #f0f4ff 0%, #e8f1ff 50%, #f5f9ff 100%);
+}
+
+#reviews::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
 }
