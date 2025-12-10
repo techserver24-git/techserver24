@@ -13,28 +13,34 @@ document.addEventListener('DOMContentLoaded', () => {
     idx = (idx + 1) % slides.length;
     track.style.transform = `translateX(-${idx * 100}%)`;
   }, 5000);
+// Reviews carousel (right -> left) with 3D-style active/inactive styling
+const reviewsTrack = document.getElementById('reviewsTrack');
+const reviewCards = Array.from(document.querySelectorAll('.review-card'));
+let rIdx = 0;
 
-  // Reviews carousel (right -> left) with 3D-style active/inactive styling
-  const reviewsTrack = document.getElementById('reviewsTrack');
-  const reviewCards = Array.from(document.querySelectorAll('.review-card'));
-  let rIdx = 0;
-  const showReview = (i) => {
-    // ensure index bounds
-    rIdx = (i + reviewCards.length) % reviewCards.length;
-    // translate track to show the active card (each card is 100% width)
-    reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
-    reviewCards.forEach((c, idx) => {
-      c.classList.remove('active','inactive');
-      if (idx === rIdx) c.classList.add('active'); else c.classList.add('inactive');
-    });
-  };
-  // init
-  if (reviewCards.length > 0) {
-    // make sure each card takes full width of the track
-    reviewCards.forEach(c => { c.style.minWidth = '100%'; c.style.maxWidth = '100%'; });
-    showReview(0);
-    setInterval(() => showReview(rIdx + 1), 3500);
-  }
+const showReview = (i) => {
+  // ensure index bounds
+  rIdx = (i + reviewCards.length) % reviewCards.length;
+  
+  // translate track to show the active card (each card is 100% width)
+  // The track is translated by (card index * 100%)
+  reviewsTrack.style.transform = `translateX(-${rIdx * 100}%)`;
+  
+  reviewCards.forEach((c, idx) => {
+    c.classList.remove('active','inactive');
+    if (idx === rIdx) c.classList.add('active'); else c.classList.add('inactive');
+  });
+};
+
+// init
+if (reviewCards.length > 0) {
+  // --- CORRECTION 3: REMOVE THE INCORRECT WIDTH OVERRIDE ---
+  // The following lines were causing the issue and should be REMOVED:
+  // reviewCards.forEach(c => { c.style.minWidth = '100%'; c.style.maxWidth = '100%'; });
+  
+  showReview(0);
+  setInterval(() => showReview(rIdx + 1), 3500);
+}
 
   // About sections scroll journey effect
   const aboutSections = Array.from(document.querySelectorAll('.about-section'));
